@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Node (RN 0.81 requires 20.19+)
-      - uses: actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: "20.19.4"
           cache: "npm"
@@ -45,7 +45,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20.19.4"
           cache: "npm"
@@ -91,7 +92,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20.19.4"
           cache: "npm"
@@ -121,10 +123,8 @@ jobs:
           set -e
           WORKSPACE="$(ls -1 ios/*.xcworkspace | head -n 1)"
           echo "workspace=$WORKSPACE" >> $GITHUB_OUTPUT
-
           SCHEME="$(xcodebuild -list -workspace "$WORKSPACE" | awk '/Schemes:/{f=1;next} f && NF{print $1; exit}')"
           echo "scheme=$SCHEME" >> $GITHUB_OUTPUT
-
           echo "Using workspace: $WORKSPACE"
           echo "Using scheme: $SCHEME"
 
@@ -140,7 +140,6 @@ jobs:
             -destination "generic/platform=iOS Simulator" \
             -derivedDataPath "$DERIVED" \
             build
-
           APP_PATH="$(find "$DERIVED" -type d -name "*.app" | head -n 1)"
           mkdir -p "$RUNNER_TEMP/ios-artifacts"
           ditto "$APP_PATH" "$RUNNER_TEMP/ios-artifacts/App.app"
